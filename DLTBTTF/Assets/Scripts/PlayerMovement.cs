@@ -37,16 +37,9 @@ public class PlayerMovement : MonoBehaviour
         if(Mathf.Abs(xInput) > 0) {
             // Acceleration value, Update speed and y linearVelocity)
             body.linearVelocity = new Vector2(xInput * acceleration, body.linearVelocity.y);
-        // Direction of Sprite
-        FaceInput();
          }
         }
     
-    // Swap sprite based on direction
-    void FaceInput(){
-            float direction = Mathf.Sign(xInput);
-            transform.localScale = new Vector3(direction, 1, 1);
-    }
     // Jump
     void HandleJump(){
         // If player is grounded and pressed space, use linearVelocity speed upwards
