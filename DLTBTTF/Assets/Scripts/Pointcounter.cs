@@ -7,9 +7,6 @@ public class Pointcounter : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
     int score = 0;
-
-    int startPos;
-
     private void Awake()
     {
      instance = this;
@@ -41,5 +38,6 @@ public class Pointcounter : MonoBehaviour
     {
         score += 1;
         scoreText.text = score.ToString() + "POINTS";
+        Launcher.stats.IncreaseStats();
     }
 }

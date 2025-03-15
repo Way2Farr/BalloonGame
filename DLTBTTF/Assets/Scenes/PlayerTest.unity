@@ -643,12 +643,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94c40577dc2f2ff4b916d222ca9ff8d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxPower: 100
-  minPower: 0.1
-  pSlide: {fileID: 944838418}
-  rb: {fileID: 454902487}
-  decay: 5
-  speed: 5
+  maxPower: 1
+  powerSlider: {fileID: 944838418}
+  speed: 2
+  decay: 1
   bounceMaterial: {fileID: 6200000, guid: c3df83b07fcd1ab408371f3febc24d73, type: 2}
 --- !u!1 &545093396
 GameObject:
@@ -1114,7 +1112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8922464696498558864, guid: ea936d38a5ee87740a774996ab177545, type: 3}
       propertyPath: m_LinearDamping
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8922464696498558864, guid: ea936d38a5ee87740a774996ab177545, type: 3}
       propertyPath: m_AngularDamping

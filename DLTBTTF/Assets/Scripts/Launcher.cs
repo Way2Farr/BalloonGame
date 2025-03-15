@@ -1,33 +1,32 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class Launcher : MonoBehaviour
 {
-    float power = 0;
-    public float maxPower = 10f;
-    public float minPower = 0.1f;
-    public Slider pSlide;
-    public Rigidbody2D rb;
-    private float bounce;
-    public float decay = 5;
-    public float speed = 5;
-    public PhysicsMaterial2D bounceMaterial;
-    private PhysicsMaterial2D defaultMaterial;
+    [SerializeField] private float maxPower = 10f;
+    [SerializeField] private Slider powerSlider;
+    [SerializeField] private float speed = 5f;
+    [SerializeField] private float decay = 5f;
+    [SerializeField] private PhysicsMaterial2D bounceMaterial;
+
+    public static Launcher stats;
+
+    private float power;
     private Collider2D paddleCollider;
+
+     private void Awake()
+    {
+     stats = this;
+    }
 
     void Start()
     {
-        pSlide.minValue = 0f;
-        pSlide.maxValue = maxPower;
+        powerSlider.minValue = 0f;
+        powerSlider.maxValue = maxPower;
 
-        rb = GetComponent<Rigidbody2D>();
         paddleCollider = GetComponent<Collider2D>();
 
-        // Store the default material and create a new instance of the bounce material
-        defaultMaterial = paddleCollider.sharedMaterial;
-        bounceMaterial = new PhysicsMaterial2D();
-        bounceMaterial.bounciness = 1; // Default bounciness
+        // Set the bounce material
         paddleCollider.sharedMaterial = bounceMaterial;
     }
 
@@ -36,45 +35,20 @@ public class Launcher : MonoBehaviour
         Charging();
     }
 
-    public void Charging()
+    private void Charging()
     {
-        pSlide.gameObject.SetActive(true);
-        pSlide.value = power;
+        powerSlider.gameObject.SetActive(true);
+        powerSlider.value = power;
 
         if (Input.GetMouseButton(0))
         {
-            if (power <= maxPower)
-            {
-                power += 50 * Time.deltaTime;
-                power = Mathf.Min(power, maxPower);
-            }
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
-            // Apply bounciness based on power
-            bounce = Mathf.Min(2, 1 + power * 0.1f); // Cap bounciness at 2
-            bounceMaterial.bounciness = bounce;
-
-            Debug.Log("Bounciness: " + bounceMaterial.bounciness);
-
-            // Launch the paddle upward
-            rb.linearVelocity = Vector2.zero;
-            rb.AddForce(Vector2.up * power * speed, ForceMode2D.Impulse);
-
-            // Reset power after launch
-            power = 0;
+            // Increase power while holding the mouse button
+            power = Mathf.Clamp(power + 50 * Time.deltaTime, 0, maxPower);
         }
         else
         {
-            // Decay power over time
-            if (power > 0)
-            {
-                power -= decay * Time.deltaTime;
-                power = Mathf.Max(power, 0);
-            }
-
-            // Reset bounciness to default when not charging
-            bounceMaterial.bounciness = 1;
+            // Decay power over time when not charging
+            power = Mathf.Max(power - decay * Time.deltaTime, 0);
         }
     }
 
@@ -86,11 +60,17 @@ public class Launcher : MonoBehaviour
             Rigidbody2D ballRb = collision.gameObject.GetComponent<Rigidbody2D>();
             if (ballRb != null)
             {
-                // Calculate the direction to launch the ball
                 Vector2 direction = (collision.transform.position - transform.position).normalized;
                 ballRb.linearVelocity = Vector2.zero; // Reset ball velocity
                 ballRb.AddForce(direction * power * speed, ForceMode2D.Impulse);
             }
         }
+    }
+
+
+    public void IncreaseStats() {
+        maxPower += 0.5f;
+        speed += 0.1f;
+
     }
 }

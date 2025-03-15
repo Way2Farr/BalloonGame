@@ -15,7 +15,7 @@ public class BallMechanics : MonoBehaviour
     void Update()
     {
         
-    touchGround();
+    TouchGround();
     }
 
 
@@ -26,7 +26,7 @@ public class BallMechanics : MonoBehaviour
         }
     }
 
-    void touchGround(){
+    void TouchGround(){
 
     touchedGround = Physics2D.OverlapCircleAll(col.transform.position, 1.7f, ground).Length > 0;
 
@@ -35,4 +35,5 @@ public class BallMechanics : MonoBehaviour
     }
 
     }
+    
 }
