@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 7a0b4309b9f09f94e9782d825f3c327f
+timeCreated: 1528493242
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108101
+  packageName: Flat Platformer Template
+  packageVersion: 1.0
+  assetPath: Assets/Flat Platformer Template/Animations/LegsJump.anim
+  uploadId: 253472

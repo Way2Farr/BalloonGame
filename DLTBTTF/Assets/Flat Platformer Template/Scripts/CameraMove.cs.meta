@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: e10d6f93db15b28488a12930b6e365a6
+timeCreated: 1509307995
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 108101
+  packageName: Flat Platformer Template
+  packageVersion: 1.0
+  assetPath: Assets/Flat Platformer Template/Scripts/CameraMove.cs
+  uploadId: 253472

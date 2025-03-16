@@ -15,6 +15,10 @@ public class PlayerMovement : MonoBehaviour
 
     public bool grounded;
 
+    public AnimationClip _walk, _jump;
+
+    public Animation _Legs;
+
     float xInput;
 
     // Update is called once per frame
@@ -37,6 +41,8 @@ public class PlayerMovement : MonoBehaviour
         if(Mathf.Abs(xInput) > 0) {
             // Acceleration value, Update speed and y linearVelocity)
             body.linearVelocity = new Vector2(xInput * acceleration, body.linearVelocity.y);
+                _Legs.clip = _walk;
+                _Legs.Play();
          }
         }
     
@@ -45,6 +51,8 @@ public class PlayerMovement : MonoBehaviour
         // If player is grounded and pressed space, use linearVelocity speed upwards
         if(Input.GetButtonDown("Jump") && grounded) { 
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpSpeed);  
+            _Legs.clip = _jump;
+            _Legs.Play();
         }
     }
 
