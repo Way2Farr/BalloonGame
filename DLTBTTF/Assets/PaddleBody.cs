@@ -1,8 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class Mantle : MonoBehaviour {
+public class PaddleBody : MonoBehaviour
+{
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Player _player;
     public float _offset;
     private bool _isMirror;

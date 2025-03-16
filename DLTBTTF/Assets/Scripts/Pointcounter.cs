@@ -6,6 +6,10 @@ public class Pointcounter : MonoBehaviour
     public static Pointcounter instance;
 
     public TextMeshProUGUI scoreText;
+
+    public TextMeshProUGUI depthText;
+
+    float depthScore = 0;
     int score = 0;
     private void Awake()
     {
@@ -19,17 +23,9 @@ public class Pointcounter : MonoBehaviour
 
     void Update()
     {
-        DepthUpdate();
+        UpdateDepthScore();
     }
 
-
-    public void DepthUpdate(){
-
-
-
-
-
-    }
 
     public void UpdateScore() {
         scoreText.text = score.ToString() + "POINTS";
@@ -39,5 +35,13 @@ public class Pointcounter : MonoBehaviour
         score += 1;
         scoreText.text = score.ToString() + "POINTS";
         Launcher.stats.IncreaseStats();
+    }
+
+    public void DepthPoints(float depth) {
+        depthScore = depth;
+    }
+
+    public void UpdateDepthScore() {
+        depthText.text = depthScore.ToString() + "HEIGHT";
     }
 }

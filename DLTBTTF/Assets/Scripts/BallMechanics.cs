@@ -11,11 +11,15 @@ public class BallMechanics : MonoBehaviour
 
     public bool touchedGround;
 
+    public float yDepth;
+
     // Update is called once per frame
     void Update()
     {
         
     TouchGround();
+    YPosition();
+    
     }
 
 
@@ -34,6 +38,13 @@ public class BallMechanics : MonoBehaviour
         Destroy(gameObject);
     }
 
+    }
+
+
+    void YPosition() {
+    yDepth = body.position.y;
+
+    Pointcounter.instance.DepthPoints(yDepth);
     }
     
 }

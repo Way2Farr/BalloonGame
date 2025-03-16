@@ -72,5 +72,7 @@ public class Launcher : MonoBehaviour
         maxPower += 0.5f;
         speed += 0.1f;
 
+        Debug.Log("Stats Increasing" + maxPower);
+
     }
 }

@@ -37,12 +37,14 @@ public class PlayerMovement : MonoBehaviour
 
 // Horizontal Movement
     void HandleXInput() {
-        // Left or Right Keys
+       
         if(Mathf.Abs(xInput) > 0) {
-            // Acceleration value, Update speed and y linearVelocity)
+         
             body.linearVelocity = new Vector2(xInput * acceleration, body.linearVelocity.y);
                 _Legs.clip = _walk;
                 _Legs.Play();
+
+    
          }
         }
     
@@ -60,7 +62,6 @@ public class PlayerMovement : MonoBehaviour
     void CheckGround() {
         grounded = Physics2D.OverlapAreaAll(groundCheck.bounds.min, groundCheck.bounds.max, groundMask).Length > 0;
     }
-
 
     
 }
