@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
 
+    private CharacterController controller;
     public Rigidbody2D body;
     public BoxCollider2D groundCheck;
     public LayerMask groundMask;
@@ -21,7 +23,24 @@ public class PlayerMovement : MonoBehaviour
 
     float xInput;
 
-    // Update is called once per frame
+    private Vector2 movementInput = Vector2.zero;
+
+    private bool jumped = false;
+
+    private void Start()
+    {
+     controller = gameObject.GetComponent<CharacterController>();   
+    }
+
+
+    public void OnMove(InputAction.CallbackContext context){
+        movementInput = context.ReadValue<Vector2>();
+    }
+
+    public void OnJump(InputAction.CallbackContext context){
+        jumped = context.action.triggered;
+    }
+
     void Update() {
         CheckInput();
         HandleJump();
@@ -32,7 +51,7 @@ public class PlayerMovement : MonoBehaviour
         HandleXInput();
     }
     void CheckInput() {
-        xInput = Input.GetAxis("Horizontal");
+        xInput = movementInput.x;
     }
 
 // Horizontal Movement
@@ -51,7 +70,7 @@ public class PlayerMovement : MonoBehaviour
     // Jump
     void HandleJump(){
         // If player is grounded and pressed space, use linearVelocity speed upwards
-        if(Input.GetButtonDown("Jump") && grounded) { 
+        if(jumped && grounded) { 
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpSpeed);  
             _Legs.clip = _jump;
             _Legs.Play();

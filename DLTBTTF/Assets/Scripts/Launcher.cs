@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class Launcher : MonoBehaviour
@@ -7,27 +8,39 @@ public class Launcher : MonoBehaviour
     [SerializeField] private Slider powerSlider;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float decay = 5f;
-    [SerializeField] private PhysicsMaterial2D bounceMaterial;
 
     public static Launcher stats;
 
     private float power;
-    private Collider2D paddleCollider;
+
+
+    private bool mouseInput;
 
      private void Awake()
     {
      stats = this;
     }
 
-    void Start()
+    private void Start()
     {
         powerSlider.minValue = 0f;
         powerSlider.maxValue = maxPower;
+        powerSlider = GameObject.FindGameObjectWithTag("Slider").GetComponent<Slider>();
+    
+    
+        if (powerSlider == null)
+    {
+        Debug.LogError("Slider not found or Slider component missing!");
+    }
+    }
 
-        paddleCollider = GetComponent<Collider2D>();
-
-        // Set the bounce material
-        paddleCollider.sharedMaterial = bounceMaterial;
+    public void OnClick(InputAction.CallbackContext context){
+        if (context.performed) {
+            mouseInput = true;
+        }
+        else if (context.canceled) {
+            mouseInput = false;
+        }
     }
 
     void Update()
@@ -40,7 +53,7 @@ public class Launcher : MonoBehaviour
         powerSlider.gameObject.SetActive(true);
         powerSlider.value = power;
 
-        if (Input.GetMouseButton(0))
+        if (mouseInput)
         {
             // Increase power while holding the mouse button
             power = Mathf.Clamp(power + 50 * Time.deltaTime, 0, maxPower);
@@ -71,7 +84,7 @@ public class Launcher : MonoBehaviour
     public void IncreaseStats() {
         maxPower += 0.5f;
         speed += 0.1f;
-
+        powerSlider.maxValue = maxPower;
         Debug.Log("Stats Increasing" + maxPower);
 
     }

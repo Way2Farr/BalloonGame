@@ -17,19 +17,15 @@ public class Pointcounter : MonoBehaviour
     }
     void Start()
     {
-       // transform.position.y = startPos;
         UpdateScore();
-    }
 
-    void Update()
-    {
-        UpdateDepthScore();
     }
 
 
     public void UpdateScore() {
         scoreText.text = score.ToString() + "POINTS";
     }
+
     public void AddPoint()
     {
         score += 1;
@@ -38,10 +34,13 @@ public class Pointcounter : MonoBehaviour
     }
 
     public void DepthPoints(float depth) {
+        depthText.text = " ";
         depthScore = depth;
+
+        string depthString = depthScore.ToString("F0");
+
+        depthText.text = depthString; 
     }
 
-    public void UpdateDepthScore() {
-        depthText.text = depthScore.ToString() + "HEIGHT";
-    }
+
 }

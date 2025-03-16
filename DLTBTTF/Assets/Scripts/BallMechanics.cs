@@ -19,7 +19,7 @@ public class BallMechanics : MonoBehaviour
         
     TouchGround();
     YPosition();
-    
+
     }
 
 
@@ -34,9 +34,9 @@ public class BallMechanics : MonoBehaviour
 
     touchedGround = Physics2D.OverlapCircleAll(col.transform.position, 1.7f, ground).Length > 0;
 
-    if(touchedGround == true) {
-        Destroy(gameObject);
-    }
+   // if(touchedGround == true) {
+       // Destroy(gameObject);
+    //}
 
     }
 
