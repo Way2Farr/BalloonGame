@@ -27,6 +27,12 @@ public class PlayerMovement : MonoBehaviour
 
     private bool jumped = false;
 
+    [SerializeField] private AudioClip walkClip;
+    [SerializeField] private AudioClip jumpClip;
+
+    private bool isWalkPlaying = false;
+    private bool isJumpPlaying = false;
+
     private void Start()
     {
      controller = gameObject.GetComponent<CharacterController>();   
@@ -62,9 +68,18 @@ public class PlayerMovement : MonoBehaviour
             body.linearVelocity = new Vector2(xInput * acceleration, body.linearVelocity.y);
                 _Legs.clip = _walk;
                 _Legs.Play();
-
+                if (!isWalkPlaying && grounded) {
+                SoundManager.instance.PlaySoundClip(walkClip, transform, 0.3f);
+                isWalkPlaying = true;
+                }
     
-         }
+            }
+            else {
+                if(isWalkPlaying) {
+              
+                    isWalkPlaying = false;
+                }
+            }
         }
     
     // Jump
@@ -74,7 +89,19 @@ public class PlayerMovement : MonoBehaviour
             body.linearVelocity = new Vector2(body.linearVelocity.x, jumpSpeed);  
             _Legs.clip = _jump;
             _Legs.Play();
+            
+            if (!isJumpPlaying) {
+            SoundManager.instance.PlaySoundClip(jumpClip, transform, 0.8f);
+            isJumpPlaying = true;
         }
+        else {
+                if(isJumpPlaying) {
+                   
+                    isJumpPlaying = false;
+                }
+            }
+        }
+
     }
 
     // Check collison on the ground

@@ -5,6 +5,14 @@ using UnityEngine;
 public class WindMill : MonoBehaviour {
     public float _Speed;
     private float _currDist, _dist;
+    [SerializeField] private AudioClip windMillClip;
+
+    [SerializeField] private AudioClip hitClip;
+
+    void Start()
+    {
+     SoundManager.instance.PlaySoundClip(windMillClip, transform, 0.5f);
+    }
 
     void Update()
     {
@@ -14,5 +22,17 @@ public class WindMill : MonoBehaviour {
         }
         _currDist = Mathf.Lerp(_currDist, _dist, Time.deltaTime*0.3f);
         transform.Rotate(0, 0, _Speed * Time.deltaTime + _currDist);
+
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ball"))
+        {
+        SoundManager.instance.PlaySoundClip(hitClip, transform, 1f);
+        }
+        
+    }
+
+
 }
