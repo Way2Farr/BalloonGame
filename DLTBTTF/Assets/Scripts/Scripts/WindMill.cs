@@ -5,14 +5,8 @@ using UnityEngine;
 public class WindMill : MonoBehaviour {
     public float _Speed;
     private float _currDist, _dist;
-    [SerializeField] private AudioClip windMillClip;
 
     [SerializeField] private AudioClip hitClip;
-
-    void Start()
-    {
-     SoundManager.instance.PlaySoundClip(windMillClip, transform, 0.5f);
-    }
 
     void Update()
     {
