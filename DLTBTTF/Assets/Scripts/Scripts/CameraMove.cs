@@ -13,14 +13,15 @@ public class CameraMove : MonoBehaviour {
     private bool faceLeft;
     private int lastX;
     private float dynamicSpeed;
-    private Camera _cam;
 
     public float minX;
     public float maxX;
 
     void Start(){
         FindPlayer();
-        _cam = gameObject.GetComponent<Camera>();
+        GameObject ball = GameObject.Find("Ball");
+
+        _target = ball.transform;
     }
 
     public void FindPlayer()

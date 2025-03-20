@@ -1,9 +1,7 @@
-// Network Transform tests
-using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerMovement : NetworkBehaviour
+public class LocalPlayerMovement : MonoBehaviour
 {
 //General Variables -----------------------------------------------
     public Rigidbody2D body;
@@ -39,41 +37,25 @@ public class PlayerMovement : NetworkBehaviour
 
     // OnMove/Jump checks play inputs for movement and jumping
 
-    public override void OnNetworkSpawn() {
-        if(!IsOwner) {
-            enabled = false;
-            return;
-        }
-    }
-
     public void OnMove(InputAction.CallbackContext context){
-        if(IsOwner) {
-            movementInput = context.ReadValue<Vector2>();
-            xInput = movementInput.x;
-        }
-
+        movementInput = context.ReadValue<Vector2>();
+        xInput = movementInput.x;
     }
 
     public void OnJump(InputAction.CallbackContext context){
-        if(IsOwner) {
         jumped = context.performed;
-        }
     }
 
 
 
     void Update() {
-        if(IsOwner) {
-            HandleJump();
-        }
+        HandleJump();
+        
     }
 
     void FixedUpdate() {
-
-        if(IsOwner) {
-            CheckGround();
-            HandleXInput();
-        }
+        CheckGround();
+        HandleXInput();
     }
 
 // Horizontal Movement -----------------------------------------------
@@ -88,19 +70,16 @@ public class PlayerMovement : NetworkBehaviour
 
             // Sound Effect Portion
             if (!wasMoving && grounded) {
-                WalkSoundClientRpc();
+                SoundManager.instance.PlaySoundClip(walkClip, transform, 0.01f);
                 isWalkPlaying = true;
             }
         }
         else {
-                if(isWalkPlaying) {
-                    isWalkPlaying = false;
-                }
+            if(isWalkPlaying) {
+                isWalkPlaying = false;
             }
+        }
         wasMoving = isMoving;
-        RequestMoveServerRpc(xInput, body.linearVelocity.y);
-        
-        
     }
     
     // Jumping -----------------------------------------------
@@ -113,10 +92,11 @@ public class PlayerMovement : NetworkBehaviour
             
             // Sound Effect Portion
             if (!isJumpPlaying) {
-                JumpSoundClientRpc();
+                SoundManager.instance.PlaySoundClip(jumpClip, transform, 0.3f);
                 isJumpPlaying = true;
         }
-            jumped = false;
+
+        jumped = false;
         }
         else {
             if(!grounded) {
@@ -129,33 +109,5 @@ public class PlayerMovement : NetworkBehaviour
         grounded = Physics2D.OverlapAreaAll(groundCheck.bounds.min, groundCheck.bounds.max, groundMask).Length > 0;
     }
 
-// NetCode Methods -----------------------------------------------
-    [ServerRpc]
-    private void RequestMoveServerRpc(float xInput, float speed)  {
-
-        body.linearVelocity = new Vector2(xInput * acceleration, speed);
-        SynchronizeClientRpc(xInput, speed);
-
-    }
-
-    [ClientRpc] 
-    private void SynchronizeClientRpc (float xInput, float speed) {
-        if(!IsOwner) {
-            body.linearVelocity = new Vector2(xInput * acceleration, speed);
-        }
-    }
-
-    [ClientRpc]
-    private void WalkSoundClientRpc() {
-        SoundManager.instance.PlaySoundClip(walkClip, transform, 0.1f);
-    }
-
-    [ClientRpc]
-    private void JumpSoundClientRpc() {
-        SoundManager.instance.PlaySoundClip(jumpClip, transform, 0.3f);
-    }
-
-
-}
-
-
+    
+} 

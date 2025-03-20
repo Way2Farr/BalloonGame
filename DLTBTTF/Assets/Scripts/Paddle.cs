@@ -1,12 +1,19 @@
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class Paddle : MonoBehaviour
+public class Paddle : NetworkBehaviour
 {
     private Camera mainCamera;
     private Vector2 mousePos;
+    private NetworkVariable<float> networkRotation = new NetworkVariable<float>();
 
     // Update is called once per frame
 
+    public override void OnNetworkSpawn() {
+        if(!IsOwner) {
+            gameObject.SetActive(false);
+        }
+    }
     void Start() {
         mainCamera = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
     }
@@ -31,6 +38,15 @@ public class Paddle : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0,0, rotZ);
 
+        RotationUpdateServerRpc(rotZ);
+
+
+    }
+
+
+    [ServerRpc]
+    private void RotationUpdateServerRpc(float r) {
+    networkRotation.Value = r;
     }
 
 } 

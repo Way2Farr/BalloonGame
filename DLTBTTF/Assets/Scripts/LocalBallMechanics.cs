@@ -1,8 +1,10 @@
-
-using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
-public class BallMechanics : NetworkBehaviour
+
+
+public class LocalBallMechanics : MonoBehaviour
 {
+
 // General Variables -----------------------------------------------
 
     public Rigidbody2D body;
@@ -10,8 +12,7 @@ public class BallMechanics : NetworkBehaviour
     public LayerMask lava;
     public bool touchedLava;
     public float yDepth;
-
-    private NetworkVariable<float> networkY = new NetworkVariable<float>();
+    
 
     // Audio -----------------------------------------------
 
@@ -21,14 +22,10 @@ public class BallMechanics : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(IsServer) {
         
     TouchLava();
     YPosition();
-        }
 
-    yDepth = networkY.Value;
-    Pointcounter.instance.DepthPoints(yDepth);
     }
 
 
@@ -37,7 +34,7 @@ public class BallMechanics : NetworkBehaviour
     void OnCollisionEnter2D(Collision2D collision) {
         
         if (collision.gameObject.CompareTag("Player")){
-            AddPointServerRpc();
+            Pointcounter.instance.AddPoint();
         }
     }
 
@@ -49,8 +46,8 @@ public class BallMechanics : NetworkBehaviour
     touchedLava = Physics2D.OverlapCircleAll(col.transform.position, 1.7f, lava).Length > 0;
 
    if(touchedLava == true) {
-        DestroyBallClientRpc();
-        PlayDestroyClientRpc();
+        Destroy(gameObject);
+        SoundManager.instance.PlaySoundClip(destroyClip, transform, 0.8f);
     }
 
     }
@@ -61,23 +58,7 @@ public class BallMechanics : NetworkBehaviour
     void YPosition() {
     yDepth = body.position.y;
 
-   networkY.Value = yDepth;
+    Pointcounter.instance.DepthPoints(yDepth);
     }
-
-// Netcode methods -----------------------------------------------
     
-    [ServerRpc]
-    private void AddPointServerRpc() {
-    Pointcounter.instance.AddPoint();
-    }
-
-    [ClientRpc]
-    private void DestroyBallClientRpc() {
-        Destroy(gameObject);
-    }
-
-    [ClientRpc]
-    private void PlayDestroyClientRpc() {
-        SoundManager.instance.PlaySoundClip(destroyClip, transform, 0.8f);
-    }
 }
